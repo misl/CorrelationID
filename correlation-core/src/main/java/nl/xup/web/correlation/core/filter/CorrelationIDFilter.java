@@ -18,14 +18,11 @@ import nl.xup.web.correlation.core.CorrelationIDManager;
  * 
  * @author misl
  */
-public class CorrelationIDFilter implements Filter {
+public class CorrelationIDFilter extends ClearCorrelationIDFilter {
 
   // --------------------------------------------------------------------------
-  // Implementing Filter
+  // Overriding ClearCorrelationIDFilter
   // --------------------------------------------------------------------------
-
-  public void init( FilterConfig filterConfig ) throws ServletException {}
-
 
   @Override
   public void doFilter( final ServletRequest servletRequest, final ServletResponse servletResponse,
@@ -52,8 +49,4 @@ public class CorrelationIDFilter implements Filter {
 
     filterChain.doFilter( servletRequest, servletResponse );
   }
-
-
-  @Override
-  public void destroy() {}
 }

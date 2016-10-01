@@ -25,13 +25,13 @@ public final class CorrelationIDManager {
   // --------------------------------------------------------------------------
 
   private static CorrelationIDManager instance = null;
+  private static String correlationIDName = "correlation-id";
 
   // --------------------------------------------------------------------------
   // Object attributes
   // --------------------------------------------------------------------------
 
   private CorrelationIDFactory<? extends Object> correlationIDFactory = null;
-  private String correlationIDName = "correlation-id";
   private ThreadLocal<Object> threadlocalCorrelationID = new ThreadLocal<>();
   private Collection<CorrelationIDChangeListener> listeners = new ArrayList<>();
 
@@ -57,7 +57,7 @@ public final class CorrelationIDManager {
     if (name == null || name.isEmpty()) {
       throw new IllegalArgumentException( "Correlation ID name can not be NULL or empty" );
     }
-    getInstance().correlationIDName = name;
+    correlationIDName = name;
   }
 
   /**
@@ -66,7 +66,7 @@ public final class CorrelationIDManager {
    * @return String with the name of the correlation ID.
    */
   public static String getName() {
-    return getInstance().correlationIDName;
+    return correlationIDName;
   }
 
   /**
@@ -97,6 +97,10 @@ public final class CorrelationIDManager {
     return correlationID;
   }
 
+  public static void clear() {
+    getInstance().threadlocalCorrelationID.remove();
+  }
+  
   public static void addChangeListener( CorrelationIDChangeListener newListener ) {
     if (newListener == null) {
       throw new IllegalArgumentException( "Change listener can not be NULL" );
