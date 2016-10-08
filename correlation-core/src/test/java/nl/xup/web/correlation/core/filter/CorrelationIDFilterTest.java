@@ -13,7 +13,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
-import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -98,7 +97,6 @@ public class CorrelationIDFilterTest {
     // Prepare
     final ServletRequest request = mock( ServletRequest.class );
     final ServletResponse response = mock( ServletResponse.class );
-    final FilterChain chain = mock( FilterChain.class );
 
     CorrelationIDManager.setCorrelationID( "test" );
     final CorrelationIDFilter filter = new CorrelationIDFilter();

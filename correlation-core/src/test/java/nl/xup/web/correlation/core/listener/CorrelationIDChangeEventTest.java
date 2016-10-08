@@ -44,5 +44,18 @@ public class CorrelationIDChangeEventTest {
     assertThat( event.getNewValue(), is( equalTo( "new" ) ) );
   }
 
+  @Test
+  public void testConstructorModifyWithNullOld() {
+    // Prepare
+
+    // Execute
+    final CorrelationIDChangeEvent event = new CorrelationIDChangeEvent( null, "new" );
+
+    // Verify
+    assertThat( event.isCreated(), is( true ) );
+    assertThat( event.getOldValue(), is( nullValue() ) );
+    assertThat( event.getNewValue(), is( equalTo( "new" ) ) );
+  }
+
   // Setters where tested implicitly
 }

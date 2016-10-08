@@ -1,16 +1,22 @@
 package nl.xup.web.correlation.core;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.mockito.Mockito.mock;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+
+import java.util.UUID;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import nl.xup.web.correlation.core.listener.CorrelationIDChangeEvent;
 import nl.xup.web.correlation.core.listener.CorrelationIDChangeListener;
@@ -27,7 +33,7 @@ public class CorrelationIDManagerTest {
   // --------------------------------------------------------------------------
 
   private CorrelationIDChangeListener listener = mock( CorrelationIDChangeListener.class );
-  
+
   // --------------------------------------------------------------------------
   // Setup / teardown
   // --------------------------------------------------------------------------
@@ -156,15 +162,67 @@ public class CorrelationIDManagerTest {
     assertThat( correlationID1, is( correlationID2 ) );
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddNullListener() {
+    // Prepare
+
+    // Execute
+    CorrelationIDManager.addChangeListener( null );
+
+    // Verify
+    fail();
+  }
+
   @Test
   public void testListenerEventFirst() {
+    // Prepare
+    ArgumentCaptor<CorrelationIDChangeEvent> argument =
+        ArgumentCaptor.forClass( CorrelationIDChangeEvent.class );
+
+    // Execute
+    CorrelationIDManager.setCorrelationID( "123" );
+    CorrelationIDManager.removeChangeListener( listener );
+
+    // Verify
+    verify( listener ).correlationIDChanged( argument.capture() );
+    assertThat( (String) argument.getValue().getNewValue(), is( "123" ) );
+    assertThat( argument.getValue().getOldValue(), is( nullValue() ) );
+    assertThat( argument.getValue().isCreated(), is( true ) );
   }
 
   @Test
   public void testListenerEventCreated() {
+    // Prepare
+    ArgumentCaptor<CorrelationIDChangeEvent> argument =
+        ArgumentCaptor.forClass( CorrelationIDChangeEvent.class );
+
+    // Execute
+    CorrelationIDManager.createCorrelationID();
+    CorrelationIDManager.removeChangeListener( listener );
+
+    // Verify
+    verify( listener ).correlationIDChanged( argument.capture() );
+    assertThat( argument.getValue().getNewValue(), is( notNullValue() ) );
+    assertThat( argument.getValue().getNewValue(), is( instanceOf( UUID.class ) ) );
+    assertThat( argument.getValue().getOldValue(), is( nullValue() ) );
+    assertThat( argument.getValue().isCreated(), is( true ) );
   }
 
   @Test
   public void testListenerEventModified() {
+    // Prepare
+    ArgumentCaptor<CorrelationIDChangeEvent> argument =
+        ArgumentCaptor.forClass( CorrelationIDChangeEvent.class );
+
+    // Execute
+    CorrelationIDManager.setCorrelationID( "123" );
+    CorrelationIDManager.setCorrelationID( "456" );
+    CorrelationIDManager.removeChangeListener( listener );
+
+    // Verify
+    verify( listener, times(2) ).correlationIDChanged( argument.capture() );
+    assertThat( (String) argument.getValue().getNewValue(), is( "456" ) );
+    assertThat( (String) argument.getValue().getOldValue(), is( "123" ) );
+    assertThat( argument.getValue().isCreated(), is( false ) );
   }
 }
