@@ -4,11 +4,13 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.validation.constraints.AssertTrue;
 
 import org.junit.Test;
 
@@ -51,5 +53,27 @@ public class ClearCorrelationIDFilterTest {
 
     // Verify
     assertThat( CorrelationIDManager.getCorrelationID(), is( nullValue() ) );
+  }
+
+  @Test
+  public void testInit() throws Exception {
+    // Prepare
+
+    // Execute
+    new ClearCorrelationIDFilter().init( null );
+
+    // Verify
+    assertTrue( true );
+  }
+
+  @Test
+  public void testDestroy() throws Exception {
+    // Prepare
+
+    // Execute
+    new ClearCorrelationIDFilter().destroy();
+
+    // Verify
+    assertTrue( true );
   }
 }
