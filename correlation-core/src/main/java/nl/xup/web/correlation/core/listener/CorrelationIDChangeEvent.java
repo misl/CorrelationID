@@ -11,6 +11,7 @@ public class CorrelationIDChangeEvent {
   // Object attributes
   // --------------------------------------------------------------------------
 
+  private Thread thread;
   private Object oldValue;
   private Object newValue;
   private boolean created;
@@ -19,13 +20,16 @@ public class CorrelationIDChangeEvent {
   // Constructors
   // --------------------------------------------------------------------------
 
-  public CorrelationIDChangeEvent(final Object newValue) {
+  public CorrelationIDChangeEvent(final Thread thread, final Object newValue) {
+    this.thread = thread;
     this.oldValue = null;
     this.newValue = newValue;
     this.created = true;
   }
 
-  public CorrelationIDChangeEvent(final Object oldValue, final Object newValue) {
+  public CorrelationIDChangeEvent(final Thread thread, final Object oldValue,
+      final Object newValue) {
+    this.thread = thread;
     this.oldValue = oldValue;
     this.newValue = newValue;
     this.created = (oldValue == null);
@@ -34,6 +38,15 @@ public class CorrelationIDChangeEvent {
   // --------------------------------------------------------------------------
   // Interface
   // --------------------------------------------------------------------------
+
+  /**
+   * Gives the thread that changed the correlation ID.
+   * 
+   * @return
+   */
+  public Thread getThread() {
+    return thread;
+  }
 
   /**
    * Gives the previous correlation ID.

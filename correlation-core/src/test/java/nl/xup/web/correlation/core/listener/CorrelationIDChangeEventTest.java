@@ -23,9 +23,11 @@ public class CorrelationIDChangeEventTest {
     // Prepare
 
     // Execute
-    final CorrelationIDChangeEvent event = new CorrelationIDChangeEvent( "new" );
+    final CorrelationIDChangeEvent event =
+        new CorrelationIDChangeEvent( Thread.currentThread(), "new" );
 
     // Verify
+    assertThat( event.getThread(), is( Thread.currentThread() ) );
     assertThat( event.isCreated(), is( true ) );
     assertThat( event.getOldValue(), is( nullValue() ) );
     assertThat( event.getNewValue(), is( equalTo( "new" ) ) );
@@ -36,9 +38,11 @@ public class CorrelationIDChangeEventTest {
     // Prepare
 
     // Execute
-    final CorrelationIDChangeEvent event = new CorrelationIDChangeEvent( "old", "new" );
+    final CorrelationIDChangeEvent event =
+        new CorrelationIDChangeEvent( Thread.currentThread(), "old", "new" );
 
     // Verify
+    assertThat( event.getThread(), is( Thread.currentThread() ) );
     assertThat( event.isCreated(), is( false ) );
     assertThat( event.getOldValue(), is( equalTo( "old" ) ) );
     assertThat( event.getNewValue(), is( equalTo( "new" ) ) );
@@ -49,9 +53,10 @@ public class CorrelationIDChangeEventTest {
     // Prepare
 
     // Execute
-    final CorrelationIDChangeEvent event = new CorrelationIDChangeEvent( null, "new" );
+    final CorrelationIDChangeEvent event = new CorrelationIDChangeEvent( null, null, "new" );
 
     // Verify
+    assertThat( event.getThread(), is( nullValue() ) );
     assertThat( event.isCreated(), is( true ) );
     assertThat( event.getOldValue(), is( nullValue() ) );
     assertThat( event.getNewValue(), is( equalTo( "new" ) ) );

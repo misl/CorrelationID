@@ -100,7 +100,7 @@ public final class CorrelationIDManager {
   public static void clear() {
     getInstance().threadlocalCorrelationID.remove();
   }
-  
+
   public static void addChangeListener( CorrelationIDChangeListener newListener ) {
     if (newListener == null) {
       throw new IllegalArgumentException( "Change listener can not be NULL" );
@@ -165,7 +165,8 @@ public final class CorrelationIDManager {
   private void createNotify( final Object correlationID ) {
     for (CorrelationIDChangeListener listener : listeners) {
       try {
-        listener.correlationIDChanged( new CorrelationIDChangeEvent( correlationID ) );
+        listener.correlationIDChanged(
+            new CorrelationIDChangeEvent( Thread.currentThread(), correlationID ) );
       } finally {
         // no-op
       }
@@ -175,7 +176,8 @@ public final class CorrelationIDManager {
   private void modifyNotify( final Object correlationID, final Object oldValue ) {
     for (CorrelationIDChangeListener listener : listeners) {
       try {
-        listener.correlationIDChanged( new CorrelationIDChangeEvent( oldValue, correlationID ) );
+        listener.correlationIDChanged(
+            new CorrelationIDChangeEvent( Thread.currentThread(), oldValue, correlationID ) );
       } finally {
         // no-op
       }
