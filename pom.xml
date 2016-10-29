@@ -157,6 +157,7 @@
     <module>correlation-core</module>
     <module>correlation-jaxrs</module>
     <module>correlation-jaxws</module>
+    <module>correlation-feign</module>
     <module>correlation-factory-timestamp</module>
   </modules>
 </project>
