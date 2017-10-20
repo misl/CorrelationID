@@ -12,6 +12,13 @@
   <name>XupCorrelationID</name>
   <packaging>pom</packaging>
 
+  <distributionManagement>
+    <repository>
+      <id>repo</id>
+      <url>https://github.com/misl/mvn-repo/raw/master/</url>
+    </repository>
+  </distributionManagement>
+
   <build>
     <plugins>
       <plugin>
