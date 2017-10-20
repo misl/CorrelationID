@@ -5,7 +5,7 @@ import feign.RequestTemplate;
 import nl.xup.web.correlation.core.CorrelationIDManager;
 
 /**
- * Feign request interceptor to add the current correlation id to the fiegn 
+ * Feign request interceptor to add the current correlation id to the feign 
  * based rest request.
  * 
  * @author misl
