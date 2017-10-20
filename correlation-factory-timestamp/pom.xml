@@ -13,7 +13,7 @@
   </parent>
 
   <groupId>nl.xup.web.correlation</groupId>
-  <artifactId>correlation-fatory-timestamp</artifactId>
+  <artifactId>correlation-factory-timestamp</artifactId>
   <name>XupCorrelationID :: Factory :: timestamp</name>
   <packaging>jar</packaging>
 
